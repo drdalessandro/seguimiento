@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router';
 import { cleanResource } from '../utils';
 import { ClinicalImpressionDisplay } from './ClinicalImpressionDisplay';
 import { PatientObservations } from './PatientObservations';
+import { PatientOrders } from './orders/PatientOrders';
+import { PatientPrograms } from './programs/PatientPrograms';
 
 interface PatientDetailsProps {
   patient: Patient;
@@ -24,12 +26,14 @@ export function PatientDetails(props: PatientDetailsProps): JSX.Element {
   const id = props.patient.id;
 
   const tabs = [
-    ['details', 'Details'],
-    ['edit', 'Edit'],
-    ['history', 'History'],
-    ['encounter', 'Encounters'],
-    ['clinical', 'Clinical Impressions'],
-    ['observations', 'Observations'],
+    ['details', 'Datos'],
+    ['edit', 'Editar'],
+    ['history', 'Historial'],
+    ['encounter', 'Consultas'],
+    ['clinical', 'Notas clínicas'],
+    ['observations', 'Observaciones'],
+    ['orders', 'Estudios'],
+    ['programs', 'Programas'],
   ];
   // Get the current tab
   const tab = window.location.pathname.split('/').pop();
@@ -47,8 +51,8 @@ export function PatientDetails(props: PatientDetailsProps): JSX.Element {
         props.onChange(patient as Patient);
         showNotification({
           icon: <IconCircleCheck />,
-          title: 'Success',
-          message: 'Patient edited',
+          title: 'Listo',
+          message: 'Paciente actualizado',
         });
         navigate(`/Patient/${id}/details`)?.catch(console.error);
         window.scrollTo(0, 0);
@@ -101,6 +105,12 @@ export function PatientDetails(props: PatientDetailsProps): JSX.Element {
         </Tabs.Panel>
         <Tabs.Panel value="observations">
           <PatientObservations patient={props.patient} />
+        </Tabs.Panel>
+        <Tabs.Panel value="orders">
+          <PatientOrders patient={props.patient} />
+        </Tabs.Panel>
+        <Tabs.Panel value="programs">
+          <PatientPrograms patient={props.patient} />
         </Tabs.Panel>
       </Tabs>
     </Document>

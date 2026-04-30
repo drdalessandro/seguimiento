@@ -43,11 +43,11 @@ export function PatientObservations(props: PatientObservationsProps): JSX.Elemen
   const navigate = useNavigate();
 
   const tabs = [
-    ['all', 'All Observations'],
-    ['height', 'Height'],
-    ['weight', 'Weight'],
-    ['blood-pressure', 'Blood Pressure'],
-    ['bmi', 'BMI'],
+    ['all', 'Todas las observaciones'],
+    ['height', 'Talla'],
+    ['weight', 'Peso'],
+    ['blood-pressure', 'Tensión arterial'],
+    ['bmi', 'IMC'],
   ];
   const [currentTab, setCurrentTab] = useState<string[]>(tabs[0]);
 

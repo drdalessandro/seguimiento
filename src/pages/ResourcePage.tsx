@@ -22,9 +22,13 @@ export function ResourcePage(): JSX.Element | null {
   const { resourceType, id } = useParams();
   const [resource, setResource] = useState<Resource | undefined>(undefined);
 
-  const tabs = ['Details', 'Edit', 'History'];
+  const tabs: [string, string][] = [
+    ['details', 'Detalles'],
+    ['edit', 'Editar'],
+    ['history', 'Historial'],
+  ];
   const tab = window.location.pathname.split('/').pop();
-  const currentTab = tab && tabs.map((t) => t.toLowerCase()).includes(tab) ? tab : tabs[0];
+  const currentTab = tab && tabs.map((t) => t[0]).includes(tab) ? tab : tabs[0][0];
 
   function handleTabChange(newTab: string | null): void {
     navigate(`/${resourceType}/${id}/${newTab ?? ''}`)?.catch(console.error);
@@ -47,8 +51,8 @@ export function ResourcePage(): JSX.Element | null {
         setResource(resource);
         showNotification({
           icon: <IconCircleCheck />,
-          title: 'Success',
-          message: 'Resource edited.',
+          title: 'Listo',
+          message: 'Recurso actualizado.',
         });
         navigate(`/${resourceType}/${id}/details`)?.catch(console.error);
         window.scroll(0, 0);
@@ -72,9 +76,9 @@ export function ResourcePage(): JSX.Element | null {
       <Title>{getDisplayString(resource)}</Title>
       <Tabs value={currentTab.toLowerCase()} onChange={handleTabChange}>
         <Tabs.List mb="xs">
-          {tabs.map((tab) => (
-            <Tabs.Tab value={tab.toLowerCase()} key={tab.toLowerCase()}>
-              {tab}
+          {tabs.map(([value, label]) => (
+            <Tabs.Tab value={value} key={value}>
+              {label}
             </Tabs.Tab>
           ))}
         </Tabs.List>

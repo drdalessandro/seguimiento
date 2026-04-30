@@ -81,8 +81,8 @@ export function CreateEncounter({ opened, handlers }: CreateEncounterProps): JSX
       .then((encounter) => {
         showNotification({
           icon: <IconCircleCheck />,
-          title: 'Success',
-          message: 'Encounter created',
+          title: 'Listo',
+          message: 'Consulta creada',
         });
         navigate(`/Encounter/${encounter.id}`)?.catch(console.error);
       })
@@ -97,8 +97,7 @@ export function CreateEncounter({ opened, handlers }: CreateEncounterProps): JSX
   }
 
   return (
-    <Modal opened={opened} onClose={handlers.close}>
-      <p>Create an Encounter</p>
+    <Modal opened={opened} onClose={handlers.close} title="Nueva consulta">
       <QuestionnaireForm questionnaire={createEncounterQuestionnaire} onSubmit={handleQuestionnaireSubmit} />
     </Modal>
   );
@@ -107,13 +106,13 @@ export function CreateEncounter({ opened, handlers }: CreateEncounterProps): JSX
 const createEncounterQuestionnaire: Questionnaire = {
   resourceType: 'Questionnaire',
   status: 'active',
-  title: 'Create an Encounter',
+  title: 'Nueva consulta',
   id: 'new-encounter',
   item: [
     {
       linkId: 'patient',
       type: 'reference',
-      text: 'Which patient is the subject of this encounter?',
+      text: 'Paciente',
       required: true,
       extension: [
         {
@@ -131,7 +130,7 @@ const createEncounterQuestionnaire: Questionnaire = {
     {
       linkId: 'date',
       type: 'date',
-      text: 'What is the date of the encounter?',
+      text: 'Fecha de la consulta',
       required: true,
       initial: [
         {
@@ -142,14 +141,14 @@ const createEncounterQuestionnaire: Questionnaire = {
     {
       linkId: 'class',
       type: 'choice',
-      text: 'What is the encounter class?',
+      text: 'Modalidad',
       required: true,
       answerValueSet: 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode',
     },
     {
       linkId: 'type',
       type: 'choice',
-      text: 'What type of encounter is this?',
+      text: 'Tipo de consulta',
       answerValueSet: 'https://example.com/encounter-types',
     },
   ],

@@ -1,0 +1,223 @@
+{
+  "$schema": "https://epa-bienestar.com.ar/schemas/order-panels.v1.json",
+  "version": "2025.04.30",
+  "panels": [
+    {
+      "id": "panel-rcv-basico",
+      "category": "laboratory",
+      "label": "Riesgo cardiovascular básico",
+      "description": "Evaluación inicial del riesgo cardiovascular: lipidograma, glucemia, función renal e iones.",
+      "indicaciones": ["primera consulta", "control anual", "screening RCV"],
+      "items": [
+        { "system": "http://loinc.org", "code": "24331-1", "display": "Lipid 1996 panel - Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "33747-0", "display": "Comprehensive metabolic 2000 panel - Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "4548-4", "display": "Hemoglobin A1c/Hemoglobin.total in Blood" },
+        { "system": "http://loinc.org", "code": "3094-0", "display": "Urea nitrogen [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-hipertension-control",
+      "category": "laboratory",
+      "label": "Control de hipertensión",
+      "description": "Función renal, ionograma, glucemia, microalbuminuria.",
+      "indicaciones": ["paciente HTA conocido", "control bianual", "ajuste farmacológico"],
+      "items": [
+        { "system": "http://loinc.org", "code": "2160-0", "display": "Creatinine [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "2823-3", "display": "Potassium [Moles/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "2951-2", "display": "Sodium [Moles/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "14959-1", "display": "Microalbumin/Creatinine [Mass Ratio] in Urine" },
+        { "system": "http://loinc.org", "code": "2345-7", "display": "Glucose [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-diabetes-control",
+      "category": "laboratory",
+      "label": "Control de diabetes",
+      "description": "Glucemia, HbA1c, función renal, perfil lipídico, microalbuminuria.",
+      "indicaciones": ["DM2 conocida", "screening DM", "control trimestral / semestral"],
+      "items": [
+        { "system": "http://loinc.org", "code": "4548-4", "display": "Hemoglobin A1c/Hemoglobin.total in Blood" },
+        { "system": "http://loinc.org", "code": "1558-6", "display": "Fasting glucose [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "24331-1", "display": "Lipid 1996 panel - Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "14959-1", "display": "Microalbumin/Creatinine [Mass Ratio] in Urine" },
+        { "system": "http://loinc.org", "code": "2160-0", "display": "Creatinine [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-tiroideo",
+      "category": "laboratory",
+      "label": "Perfil tiroideo",
+      "description": "TSH, T4L, T3L y anticuerpos antitiroideos.",
+      "indicaciones": ["sospecha de hipo/hipertiroidismo", "control de medicación"],
+      "items": [
+        { "system": "http://loinc.org", "code": "3016-3", "display": "Thyrotropin [Units/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "3024-7", "display": "Free Thyroxine (T4) in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "3051-0", "display": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "8099-7", "display": "Thyroid peroxidase Ab [Units/volume] in Serum" }
+      ]
+    },
+    {
+      "id": "panel-hepatograma",
+      "category": "laboratory",
+      "label": "Hepatograma",
+      "description": "GOT, GPT, FAL, GGT, bilirrubina total y directa.",
+      "indicaciones": ["dolor abdominal alto", "control de hepatotóxicos", "screening hepatopatía"],
+      "items": [
+        { "system": "http://loinc.org", "code": "1742-6", "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "1920-8", "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "6768-6", "display": "Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "2324-2", "display": "Gamma glutamyl transferase [Enzymatic activity/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "1975-2", "display": "Bilirubin.total [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "1968-7", "display": "Bilirubin.direct [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-hemograma-ferremia",
+      "category": "laboratory",
+      "label": "Hemograma + perfil férrico",
+      "description": "Hemograma completo, ferremia, ferritina, transferrina.",
+      "indicaciones": ["sospecha de anemia", "control postparto", "fatiga inespecífica"],
+      "items": [
+        { "system": "http://loinc.org", "code": "58410-2", "display": "Complete blood count (hemogram) panel - Blood by Automated count" },
+        { "system": "http://loinc.org", "code": "2498-4", "display": "Iron [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "2276-4", "display": "Ferritin [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "3034-6", "display": "Transferrin [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-mujer-screening",
+      "category": "laboratory",
+      "label": "Screening Mujer (general)",
+      "description": "Hemograma, lipidograma, TSH, glucemia, vitamina D, calcemia.",
+      "indicaciones": ["control ginecológico anual", "Programa Mujer"],
+      "programs": ["mujer"],
+      "items": [
+        { "system": "http://loinc.org", "code": "58410-2", "display": "Complete blood count panel" },
+        { "system": "http://loinc.org", "code": "24331-1", "display": "Lipid 1996 panel" },
+        { "system": "http://loinc.org", "code": "3016-3", "display": "Thyrotropin [Units/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "2345-7", "display": "Glucose [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "62292-8", "display": "25-Hydroxyvitamin D2+D3 [Mass/volume] in Serum or Plasma" },
+        { "system": "http://loinc.org", "code": "17861-6", "display": "Calcium [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-orina-completa",
+      "category": "laboratory",
+      "label": "Orina completa",
+      "description": "Análisis físico-químico y sedimento urinario.",
+      "indicaciones": ["control general", "sospecha de ITU", "screening DBT/HTA"],
+      "items": [
+        { "system": "http://loinc.org", "code": "24356-8", "display": "Urinalysis complete panel - Urine" }
+      ]
+    },
+    {
+      "id": "panel-cardio-troponina",
+      "category": "laboratory",
+      "label": "Marcadores cardíacos",
+      "description": "Troponina T/I de alta sensibilidad y NT-proBNP.",
+      "indicaciones": ["dolor torácico", "sospecha de IAM", "control de IC"],
+      "programs": ["cardio"],
+      "items": [
+        { "system": "http://loinc.org", "code": "67151-1", "display": "Troponin T.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method" },
+        { "system": "http://loinc.org", "code": "33762-6", "display": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma" }
+      ]
+    },
+    {
+      "id": "panel-rx-torax",
+      "category": "imaging",
+      "label": "Rx tórax frente y perfil",
+      "description": "Radiografía simple de tórax en proyecciones frente y perfil.",
+      "indicaciones": ["disnea", "tos persistente", "evaluación pre-operatoria"],
+      "items": [
+        { "system": "http://loinc.org", "code": "36572-6", "display": "Chest X-ray PA and Lateral" }
+      ]
+    },
+    {
+      "id": "panel-ecocardiograma",
+      "category": "imaging",
+      "label": "Ecocardiograma Doppler",
+      "description": "Ecocardiograma transtorácico con Doppler color.",
+      "indicaciones": ["sospecha de cardiopatía", "control de IC", "soplos"],
+      "programs": ["cardio", "rhcv"],
+      "items": [
+        { "system": "http://loinc.org", "code": "29554-3", "display": "US.doppler Heart" }
+      ]
+    },
+    {
+      "id": "panel-ergometria",
+      "category": "imaging",
+      "label": "Ergometría",
+      "description": "Prueba ergométrica graduada por protocolo de Bruce.",
+      "indicaciones": ["sospecha de cardiopatía isquémica", "evaluación funcional"],
+      "programs": ["cardio", "rhcv"],
+      "items": [
+        { "system": "http://loinc.org", "code": "18752-6", "display": "EKG cardiac stress study" }
+      ]
+    },
+    {
+      "id": "panel-holter-24h",
+      "category": "imaging",
+      "label": "Holter 24h",
+      "description": "Monitoreo electrocardiográfico continuo de 24 horas.",
+      "indicaciones": ["palpitaciones", "síncope", "arritmias documentadas"],
+      "programs": ["cardio"],
+      "items": [
+        { "system": "http://loinc.org", "code": "11522-0", "display": "EKG 24 hour study" }
+      ]
+    },
+    {
+      "id": "panel-mapa-24h",
+      "category": "imaging",
+      "label": "MAPA 24h",
+      "description": "Monitoreo ambulatorio de presión arterial de 24 horas.",
+      "indicaciones": ["sospecha HTA de guardapolvo blanco", "HTA refractaria"],
+      "programs": ["cardio", "rhcv"],
+      "items": [
+        { "system": "http://loinc.org", "code": "85354-9", "display": "Blood pressure panel with all children optional" }
+      ]
+    },
+    {
+      "id": "panel-eco-doppler-vasos-cuello",
+      "category": "imaging",
+      "label": "Eco Doppler vasos del cuello",
+      "description": "Evaluación de carótidas y vertebrales con Doppler color.",
+      "indicaciones": ["screening RCV", "ACV/AIT previo"],
+      "programs": ["cardio", "rhcv"],
+      "items": [
+        { "system": "http://loinc.org", "code": "29282-1", "display": "US.doppler Carotid arteries" }
+      ]
+    },
+    {
+      "id": "panel-mamografia",
+      "category": "imaging",
+      "label": "Mamografía bilateral",
+      "description": "Screening mamario.",
+      "indicaciones": ["screening anual ≥40 años", "sospecha clínica"],
+      "programs": ["mujer"],
+      "items": [
+        { "system": "http://loinc.org", "code": "26346-3", "display": "MG Breast Diagnostic" }
+      ]
+    },
+    {
+      "id": "panel-eco-ginecologica",
+      "category": "imaging",
+      "label": "Ecografía ginecológica transvaginal",
+      "description": "Evaluación útero, anexos y pelvis menor.",
+      "indicaciones": ["sangrado uterino anormal", "control ginecológico"],
+      "programs": ["mujer"],
+      "items": [
+        { "system": "http://loinc.org", "code": "38071-7", "display": "US Pelvis Female limited" }
+      ]
+    },
+    {
+      "id": "panel-eco-abdominal",
+      "category": "imaging",
+      "label": "Ecografía abdominal",
+      "description": "Hígado, vía biliar, páncreas, riñones y vejiga.",
+      "indicaciones": ["dolor abdominal", "alteraciones del hepatograma"],
+      "items": [
+        { "system": "http://loinc.org", "code": "30704-1", "display": "US Abdomen" }
+      ]
+    }
+  ]
+}

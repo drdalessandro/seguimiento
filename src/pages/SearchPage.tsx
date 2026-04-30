@@ -1,15 +1,16 @@
 // SPDX-FileCopyrightText: Copyright Orangebot, Inc. and Medplum contributors
 // SPDX-License-Identifier: Apache-2.0
-import { Paper } from '@mantine/core';
+import { Chip, Group, Paper, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { formatSearchQuery, parseSearchRequest } from '@medplum/core';
+import { formatSearchQuery, Operator, parseSearchRequest } from '@medplum/core';
 import type { Filter, SearchRequest, SortRule } from '@medplum/core';
 import type { UserConfiguration } from '@medplum/fhirtypes';
 import { Loading, SearchControl, useMedplum } from '@medplum/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { JSX } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { CreateEncounter } from '../components/actions/CreateEncounter';
+import { PROGRAMS, PROGRAM_TAG_SYSTEM } from '../programs';
 import classes from './SearchPage.module.css';
 
 export function SearchPage(): JSX.Element {
@@ -23,8 +24,8 @@ export function SearchPage(): JSX.Element {
     const parsedSearch = parseSearchRequest(location.pathname + location.search);
 
     if (!parsedSearch.resourceType) {
-      // If there is no search, go to the Encounter search page by default
-      navigate('/Encounter')?.catch(console.error);
+      // Default landing for clinicians: lista de pacientes
+      navigate('/Patient')?.catch(console.error);
       return;
     }
 
@@ -43,13 +44,49 @@ export function SearchPage(): JSX.Element {
     }
   }, [medplum, navigate, location]);
 
+  const activeProgram = useMemo(
+    () => search?.filters?.find((f) => f.code === '_tag' && f.value.startsWith(`${PROGRAM_TAG_SYSTEM}|`))?.value.split('|')[1],
+    [search?.filters]
+  );
+
   if (!search?.resourceType || !search.fields || search.fields.length === 0) {
     return <Loading />;
+  }
+
+  function applyProgramFilter(code: string | null): void {
+    if (!search) return;
+    const otherFilters = search.filters?.filter((f) => f.code !== '_tag' || !f.value.startsWith(`${PROGRAM_TAG_SYSTEM}|`)) ?? [];
+    const next: SearchRequest = {
+      ...search,
+      filters: code
+        ? [...otherFilters, { code: '_tag', operator: Operator.EQUALS, value: `${PROGRAM_TAG_SYSTEM}|${code}` }]
+        : otherFilters,
+    };
+    navigate(`/${next.resourceType}${formatSearchQuery(next)}`)?.catch(console.error);
   }
 
   return (
     <Paper shadow="xs" m="md" p="xs" className={classes.paper}>
       <CreateEncounter opened={opened} handlers={handlers} />
+      <Group gap="xs" mb="xs" align="center">
+        <Text size="sm" c="dimmed">
+          Programa:
+        </Text>
+        <Chip checked={!activeProgram} onChange={() => applyProgramFilter(null)} size="xs" color="epa">
+          Todos
+        </Chip>
+        {PROGRAMS.filter((p) => p.code !== 'seguimiento').map((p) => (
+          <Chip
+            key={p.code}
+            checked={activeProgram === p.code}
+            onChange={() => applyProgramFilter(activeProgram === p.code ? null : p.code)}
+            size="xs"
+            color={p.color}
+          >
+            {p.shortLabel}
+          </Chip>
+        ))}
+      </Group>
       <SearchControl
         checkboxesEnabled={false}
         search={search}
@@ -60,7 +97,7 @@ export function SearchPage(): JSX.Element {
         }}
         hideFilters={true}
         hideToolbar={search.resourceType !== 'Encounter'}
-        onNew={handlers.open}
+        onNew={search.resourceType === 'Encounter' ? handlers.open : undefined}
       />
     </Paper>
   );
@@ -85,7 +122,7 @@ function getDefaultResourceType(config: UserConfiguration | undefined): string {
   return (
     localStorage.getItem('defaultResourceType') ??
     config?.option?.find((o) => o.id === 'defaultResourceType')?.valueString ??
-    'Task'
+    'Patient'
   );
 }
 
@@ -119,6 +156,14 @@ function getDefaultFields(resourceType: string): string[] {
       return ['name', 'gender', 'birthDate', '_lastUpdated'];
     case 'Practitioner':
       return ['name', '_lastUpdated'];
+    case 'ServiceRequest':
+      return ['subject', 'code', 'status', 'authoredOn'];
+    case 'DiagnosticReport':
+      return ['subject', 'code', 'status', 'effectiveDateTime'];
+    case 'Appointment':
+      return ['serviceType', 'start', 'status', 'participant'];
+    case 'Task':
+      return ['for', 'code', 'status', 'priority'];
     default:
       return ['_id', '_lastUpdated'];
   }

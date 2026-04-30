@@ -19,7 +19,7 @@ export function SoapNote(): JSX.Element {
   }, [medplum]);
 
   if (!questionnaire) {
-    return <div>Loading...</div>;
+    return <div>Cargando…</div>;
   }
 
   async function handleSubmit(questionnaireResponse: QuestionnaireResponse): Promise<void> {
@@ -56,7 +56,7 @@ export function SoapNote(): JSX.Element {
 
         {submitted ? (
           <Flex justify="flex-end" mt={8}>
-            <Text mr={8}>Submitted</Text>
+            <Text mr={8}>Enviado</Text>
             <IconCircleCheck color="#79d290" size={24} />
           </Flex>
         ) : null}

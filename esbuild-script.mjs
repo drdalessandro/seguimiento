@@ -7,8 +7,8 @@ import botLayer from '@medplum/bot-layer/package.json' with { type: 'json' };
 import esbuild from 'esbuild';
 import fastGlob from 'fast-glob';
 
-// Find all TypeScript files in your source directory
-const entryPoints = fastGlob.sync('./src/**/*.ts').filter((file) => !file.endsWith('test.ts'));
+// Find all bot TypeScript files (only src/bots/**, not src/* like config/programs)
+const entryPoints = fastGlob.sync('./src/bots/**/*.ts').filter((file) => !file.endsWith('test.ts'));
 
 const botLayerDeps = Object.keys(botLayer.dependencies);
 
@@ -17,9 +17,11 @@ const esbuildOptions = {
   entryPoints: entryPoints,
   bundle: true, // Bundle imported functions
   outdir: './dist', // Output directory for compiled files
+  outbase: './src', // Preserve src/bots/core/* directory structure under dist/
   platform: 'node', // or 'node', depending on your target platform
   loader: {
     '.ts': 'ts', // Load TypeScript files
+    '.json': 'json',
   },
   resolveExtensions: ['.ts'],
   external: botLayerDeps,

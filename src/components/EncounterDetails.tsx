@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { useNavigate } from 'react-router';
 import { EncounterNoteDisplay } from './EncounterNoteDisplay';
+import { OrdersPanel } from './orders/OrdersPanel';
 
 interface EncounterDetailsProps {
   encounter: Encounter;
@@ -21,9 +22,14 @@ export function EncounterDetails(props: EncounterDetailsProps): JSX.Element {
 
   const id = props.encounter.id;
 
-  const tabs = ['Note', 'Details', 'History'];
+  const tabs: [string, string][] = [
+    ['note', 'Nota'],
+    ['orders', 'Pedidos'],
+    ['details', 'Detalles'],
+    ['history', 'Historial'],
+  ];
   const tab = window.location.pathname.split('/').pop();
-  const currentTab = tab && tabs.map((t) => t.toLowerCase()).includes(tab) ? tab : tabs[0].toLowerCase();
+  const currentTab = tab && tabs.map((t) => t[0]).includes(tab) ? tab : tabs[0][0];
 
   // Get the encounter type so the correct questionnaire can be retrieved
   const encounterType = props.encounter.type?.[0].coding?.[0].code;
@@ -88,11 +94,11 @@ export function EncounterDetails(props: EncounterDetailsProps): JSX.Element {
 
   return (
     <Document>
-      <Tabs defaultValue="details" value={currentTab.toLowerCase()} onChange={handleTabChange}>
+      <Tabs defaultValue="note" value={currentTab.toLowerCase()} onChange={handleTabChange}>
         <Tabs.List mb="sm">
-          {tabs.map((tab) => (
-            <Tabs.Tab key={tab} value={tab.toLowerCase()}>
-              {tab}
+          {tabs.map(([value, label]) => (
+            <Tabs.Tab key={value} value={value}>
+              {label}
             </Tabs.Tab>
           ))}
         </Tabs.List>
@@ -102,6 +108,9 @@ export function EncounterDetails(props: EncounterDetailsProps): JSX.Element {
           ) : (
             <QuestionnaireForm questionnaire={questionnaire} onSubmit={handleQuestionnaireSubmit} />
           )}
+        </Tabs.Panel>
+        <Tabs.Panel value="orders">
+          <OrdersPanel encounter={props.encounter} />
         </Tabs.Panel>
         <Tabs.Panel value="details">
           <ResourceTable value={props.encounter} ignoreMissingValues={true} />

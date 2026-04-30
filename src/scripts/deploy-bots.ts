@@ -28,6 +28,16 @@ const Bots: BotDescription[] = [
     dist: 'dist/bots/core/gynecology-encounter-note.js',
     criteria: 'QuestionnaireResponse?questionnaire=$gynecology-visit',
   },
+  {
+    src: 'src/bots/core/clinical-ai-suggest.ts',
+    dist: 'dist/bots/core/clinical-ai-suggest.js',
+    criteria: 'Encounter?status=in-progress',
+  },
+  {
+    src: 'src/bots/core/clinical-ai-interpret.ts',
+    dist: 'dist/bots/core/clinical-ai-interpret.js',
+    criteria: 'DiagnosticReport?status=final',
+  },
 ];
 
 async function main(): Promise<void> {

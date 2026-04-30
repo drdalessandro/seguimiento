@@ -1,0 +1,127 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:ap-medico-multi-programa",
+      "request": { "method": "PUT", "url": "AccessPolicy?name=Medico%20multi-programa" },
+      "resource": {
+        "resourceType": "AccessPolicy",
+        "name": "Medico multi-programa",
+        "resource": [
+          { "resourceType": "Patient", "readonly": false },
+          { "resourceType": "Encounter", "readonly": false },
+          { "resourceType": "Observation", "readonly": false },
+          { "resourceType": "Condition", "readonly": false },
+          { "resourceType": "ClinicalImpression", "readonly": false },
+          { "resourceType": "ServiceRequest", "readonly": false },
+          { "resourceType": "DiagnosticReport", "readonly": false },
+          { "resourceType": "DocumentReference", "readonly": false },
+          { "resourceType": "Communication", "readonly": false },
+          { "resourceType": "Task", "readonly": false },
+          { "resourceType": "Questionnaire", "readonly": true },
+          { "resourceType": "QuestionnaireResponse", "readonly": false },
+          { "resourceType": "Practitioner", "readonly": true },
+          { "resourceType": "PractitionerRole", "readonly": true }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ap-medico-cardio",
+      "request": { "method": "PUT", "url": "AccessPolicy?name=Medico%20Programa%20Cardio" },
+      "resource": {
+        "resourceType": "AccessPolicy",
+        "name": "Medico Programa Cardio",
+        "resource": [
+          {
+            "resourceType": "Patient",
+            "criteria": "Patient?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "Encounter",
+            "criteria": "Encounter?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "Observation",
+            "criteria": "Observation?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "Condition",
+            "criteria": "Condition?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "ServiceRequest",
+            "criteria": "ServiceRequest?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "DiagnosticReport",
+            "criteria": "DiagnosticReport?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          {
+            "resourceType": "ClinicalImpression",
+            "criteria": "ClinicalImpression?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          },
+          { "resourceType": "Questionnaire", "readonly": true },
+          {
+            "resourceType": "QuestionnaireResponse",
+            "criteria": "QuestionnaireResponse?_tag=https://epa-bienestar.com.ar/programa|cardio",
+            "readonly": false
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ap-medico-mujer",
+      "request": { "method": "PUT", "url": "AccessPolicy?name=Medico%20Programa%20Mujer" },
+      "resource": {
+        "resourceType": "AccessPolicy",
+        "name": "Medico Programa Mujer",
+        "resource": [
+          {
+            "resourceType": "Patient",
+            "criteria": "Patient?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          {
+            "resourceType": "Encounter",
+            "criteria": "Encounter?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          {
+            "resourceType": "Observation",
+            "criteria": "Observation?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          {
+            "resourceType": "Condition",
+            "criteria": "Condition?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          {
+            "resourceType": "ServiceRequest",
+            "criteria": "ServiceRequest?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          {
+            "resourceType": "DiagnosticReport",
+            "criteria": "DiagnosticReport?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          },
+          { "resourceType": "Questionnaire", "readonly": true },
+          {
+            "resourceType": "QuestionnaireResponse",
+            "criteria": "QuestionnaireResponse?_tag=https://epa-bienestar.com.ar/programa|mujer",
+            "readonly": false
+          }
+        ]
+      }
+    }
+  ]
+}

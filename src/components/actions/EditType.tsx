@@ -47,8 +47,8 @@ export function EditType(props: EditTypeProps): JSX.Element {
         props.onChange(encounter);
         showNotification({
           icon: <IconCircleCheck />,
-          title: 'Success',
-          message: 'Type edited',
+          title: 'Listo',
+          message: 'Tipo de consulta actualizado',
         });
       })
       .catch((err) => {
@@ -63,10 +63,10 @@ export function EditType(props: EditTypeProps): JSX.Element {
 
   return (
     <div>
-      <Button fullWidth onClick={handlers.open}>
-        Edit Encounter Type
+      <Button fullWidth onClick={handlers.open} variant="light">
+        Cambiar tipo de consulta
       </Button>
-      <Modal opened={opened} onClose={handlers.close}>
+      <Modal opened={opened} onClose={handlers.close} title="Cambiar tipo de consulta">
         <QuestionnaireForm questionnaire={editTypeQuestionnaire} onSubmit={handleQuestionnaireSubmit} />
       </Modal>
     </div>
@@ -77,12 +77,12 @@ const editTypeQuestionnaire: Questionnaire = {
   resourceType: 'Questionnaire',
   status: 'active',
   id: 'edit-type',
-  title: 'Edit Encounter Type',
+  title: 'Cambiar tipo de consulta',
   item: [
     {
       linkId: 'type',
       type: 'choice',
-      text: 'New Type:',
+      text: 'Nuevo tipo:',
       answerValueSet: 'https://example.com/encounter-types',
     },
   ],

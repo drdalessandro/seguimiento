@@ -61,7 +61,7 @@ export function TaskList(): JSX.Element | null {
 
   return (
     <Card w="33%" withBorder p="sm" radius="md" mx="md" my="xl" shadow="xs">
-      <Title>{`Required Action (${tasks.length})`}</Title>
+      <Title>{`Pendientes (${tasks.length})`}</Title>
       <Box>
         <Timeline>
           {tasks.map((task, idx) => (

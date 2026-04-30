@@ -1,94 +1,105 @@
-<h1 align="center">Medplum Charting Demo</h1>
-<p align="center">A starter application for building a charting app on Medplum.</p>
-<p align="center">
-<a href="https://github.com/medplum/medplum-hello-world/blob/main/LICENSE.txt">
-    <img src="https://img.shields.io/badge/license-Apache-blue.svg" />
-  </a>
-</p>
+<h1 align="center">Seguimiento — EPA Bienestar</h1>
+<p align="center">Plataforma clínica unificada con historia longitudinal, órdenes de estudios y soporte de IA, integrada al backend Medplum self-hosted en <a href="https://api.epa-bienestar.com.ar">api.epa-bienestar.com.ar</a>.</p>
 
-This example app demonstrates the following:
+URL pública: **https://seguimiento.epa-bienestar.com.ar**
 
-- Managing the lifecycle of an encounter and its corresponding notes.
-- Creating and displaying Encounter Notes using the [`ClinicalImpression`](/docs/api/fhir/resources/clinicalimpression) resource.
-- Converting notes into structured data ([`Observations`](/docs/api/fhir/resources/observation) and [`Conditions`](/docs/api/fhir/resources/condition)) for easy retrieval and longitudinal tracking.
-- Using [Medplum React Components](https://storybook.medplum.com/?path=/docs/medplum-introduction--docs) to display a chart that provides visibility on a patient and their medical encounters.
-  - More information on a [charting experience](https://www.medplum.com/docs/charting)
+---
 
-### Code Organization
+## Qué hace
 
-This repo is organized into two main directories: `src` and `data`.
+- **Historia longitudinal unificada** de los 6 programas EPA (Mujer, Cardio, RHCV, SAC, AFACIMERA, Hábitos), agregando lo que cada programa escribe en el backend FHIR central.
+- **Pedidos de estudios complementarios**: catálogo curado de paneles con códigos LOINC (laboratorio + imágenes), generación de PDF imprimible, carga y vinculación de resultados como `DiagnosticReport`.
+- **Asistencia por IA** vía Bots de Medplum + Claude API:
+  - sugerencia de paneles de estudios según el cuadro clínico
+  - interpretación automática de resultados con detección de hallazgos críticos
+- **De-identificación previa** de todos los datos enviados a Claude (HMAC sobre identificadores, fechas relativas, sin nombre/DNI/dirección) — Ley 25.326.
+- **Multi-tenant lógico**: un único Project Medplum, recursos taggeados por programa con `meta.tag` (`https://epa-bienestar.com.ar/programa|<código>`).
 
-The `src` directory contains the React app that implements the charting UX. In addition, it contains a `bots` directory, which has [Medplum Bots](/packages/docs/docs/bots/bot-basics.md) to implement the parsing of notes into structured data.
+## Stack
 
-The `data` directory contains data that can be uploaded for use in the demo. The `example` directory contains data that is meant to be used for testing and learning, while the `core` directory contains resources, terminologies, and more that are necessary to use the demo.
+- React 19 + Vite + Mantine 8
+- Medplum 5 (cliente FHIR, componentes, Bots)
+- Claude Sonnet 4.6 vía Anthropic API (desde los Bots)
+- Despliegue: build estático servido por Nginx en la misma VPS que el backend
 
-### Components of the Encounter Chart
+## Estructura
 
-The Encounter Chart has 3 distinct panels
-
-1. Clinical Chart
-   The left panel shows the patient history and their status. Notable information in the clinical chart includes the following Resources:
-
-   - Patient Information
-   - Upcoming Appointments
-   - Documented Visits
-   - List of Allergies
-   - List of Problems
-   - Medication Requests
-   - Smoking Status
-   - Vitals
-
-2. Encounter Note
-   The center panel allows users to create a note or view it if it already exists. The note allows users to:
-
-- Enter objective data about the condition relevant to the encounter.
-- Enter subjective data about symptoms that the patient is experiencing.
-- Add their own free text notes about the encounter.
-- Store contextualizing data such as the date of the encounter.
-
-3. Encounter Actions
-   The right-hand panel allows users to make changes to the encounter, including editing the type of encounter.
-
-### Getting Started
-
-If you haven't already done so, follow the instructions in [this tutorial](https://www.medplum.com/docs/tutorials/register) to register a Medplum project to store your data.
-
-[Fork](https://github.com/medplum/medplum-chart-demo/fork) and clone the repo.
-
-If you want to change any environment variables from the defaults, copy the `.env.defaults` file to `.env`
-
-```bash
-cp .env.defaults .env
+```
+src/
+  App.tsx                         layout principal y rutas
+  programs.ts                     definición de los 6 programas + helper de tags
+  bots/core/
+    clinical-ai-suggest.ts        Bot: sugerencia de estudios via Claude
+    clinical-ai-interpret.ts      Bot: interpretación de DiagnosticReport
+    deidentify.ts                 utilitarios HMAC para anonimizar antes de enviar a Claude
+  components/
+    EpaLogo.tsx                   logo SVG inline (sin assets externos)
+    orders/                       OrdersPanel, PatientOrders, catálogo, PDF
+    programs/                     badges + resumen de programas del paciente
+    actions/AiSuggestionsPanel    UI para aceptar/descartar sugerencias IA
+  pages/
+    DashboardPage.tsx             home con KPIs y vistas por programa
+    EncounterPage / PatientPage   chart clínico
+data/
+  core/
+    order-panels.json             catálogo curado de paneles (LOINC)
+    access-policies.json          AccessPolicy ejemplo (multi-programa, cardio, mujer)
+    ai-bots.json                  bundle de Bots y Subscriptions IA
+deploy/
+  nginx/                          vhost para seguimiento.epa-bienestar.com.ar
+  install.sh, update.sh           scripts de deploy a la VPS
+docs/
+  programs.md                     contrato de tags entre programas
+  ai-bots.md                      operación de los Bots IA
 ```
 
-And make the changes you need.
+## Configuración
 
-Next, install the dependencies.
+`.env.defaults` (commiteado, valores no secretos):
+
+```
+MEDPLUM_BASE_URL=https://api.epa-bienestar.com.ar/
+MEDPLUM_CLIENT_ID=babb532b-3c00-404f-9564-6c3ab6f27511   # Seguimiento
+GOOGLE_CLIENT_ID=472653584585-r9q1rl7junfi6nb2s78ajccv5n2aj6ie.apps.googleusercontent.com
+```
+
+Project Secrets en `app.epa-bienestar.com.ar` (para los Bots):
+
+| Secret | Para |
+|---|---|
+| `ANTHROPIC_API_KEY` | Llamadas a Claude API |
+| `DEIDENTIFY_HMAC_KEY` | Pseudonimización (`openssl rand -hex 32`) |
+
+## Desarrollo local
 
 ```bash
 npm install
+npm run dev      # localhost:3000
 ```
 
-Then, build the bots
+## Build + deploy a la VPS
 
 ```bash
-npm run build:bots
+# en local
+npm install
+npm run build
+git add dist/
+git commit -m "build: nuevo dist"
+git push origin claude/integrate-medplum-backend-zKqdJ
+
+# en la VPS
+cd /opt/seguimiento
+bash deploy/update.sh
 ```
 
-Then, run the app
+Detalles completos en [`deploy/README.md`](./deploy/README.md).
+
+## Tests
 
 ```bash
-npm run dev
+npm test
 ```
 
-This app should run on `http://localhost:3000/`
+## Licencia
 
-### About Medplum
-
-[Medplum](https://www.medplum.com/) is an open-source, API-first EHR. Medplum makes it easy to build healthcare apps quickly with less code.
-
-Medplum supports self-hosting and provides a [hosted service](https://app.medplum.com/). Medplum Hello World uses the hosted service as a backend.
-
-- Read our [documentation](https://www.medplum.com/docs)
-- Browse our [react component library](https://storybook.medplum.com/)
-- Join our [Discord](https://discord.gg/medplum)
+Apache 2.0. Basado en el ejemplo `medplum-chart-demo` de Medplum.

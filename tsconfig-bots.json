@@ -3,7 +3,7 @@
     "rootDir": "src/bots",
     "outDir": "dist",
     "lib": ["esnext"],
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "node"],
     "target": "es2018",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -29,5 +29,5 @@
     "noEmit": true,
     "isolatedModules": true
   },
-  "include": ["src/bots/**/*.ts"]
+  "include": ["src/bots/**/*.ts", "data/core/*.json"]
 }

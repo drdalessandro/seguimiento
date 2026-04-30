@@ -1,0 +1,59 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "_comment": "Bundle para crear/actualizar los Bots IA y sus Subscriptions. Antes de cargar, definí los Project Secrets ANTHROPIC_API_KEY y DEIDENTIFY_HMAC_KEY en app.epa-bienestar.com.ar. El campo executableCode.url se completa con la URL del Binary tras subir el .js compilado, o se hace deploy con el endpoint /admin/projects/<id>/bot.",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:bot-clinical-ai-suggest",
+      "request": { "method": "PUT", "url": "Bot?name=clinical-ai-suggest" },
+      "resource": {
+        "resourceType": "Bot",
+        "name": "clinical-ai-suggest",
+        "description": "Lee un Encounter con nota cargada, llama a Claude con datos de-identificados y crea un Task de sugerencias de paneles.",
+        "runtimeVersion": "awslambda",
+        "runAsUser": false
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bot-clinical-ai-interpret",
+      "request": { "method": "PUT", "url": "Bot?name=clinical-ai-interpret" },
+      "resource": {
+        "resourceType": "Bot",
+        "name": "clinical-ai-interpret",
+        "description": "Interpreta un DiagnosticReport recién cargado y crea una Communication al practitioner solicitante (urgente si crítico).",
+        "runtimeVersion": "awslambda",
+        "runAsUser": false
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:sub-encounter-ai-suggest",
+      "request": { "method": "PUT", "url": "Subscription?criteria=Encounter%3Fstatus%3Din-progress&_filter=name%20eq%20%22ai-suggest-on-encounter%22" },
+      "resource": {
+        "resourceType": "Subscription",
+        "status": "active",
+        "reason": "Disparar IA de sugerencia de estudios cuando un Encounter pasa a in-progress con nota cargada.",
+        "criteria": "Encounter?status=in-progress",
+        "channel": {
+          "type": "rest-hook",
+          "endpoint": "Bot/$bot-clinical-ai-suggest-id",
+          "payload": "application/fhir+json"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:sub-diagnostic-ai-interpret",
+      "request": { "method": "PUT", "url": "Subscription?criteria=DiagnosticReport%3Fstatus%3Dfinal&_filter=name%20eq%20%22ai-interpret-on-final-report%22" },
+      "resource": {
+        "resourceType": "Subscription",
+        "status": "active",
+        "reason": "Disparar IA de interpretación cuando un DiagnosticReport queda en estado final.",
+        "criteria": "DiagnosticReport?status=final",
+        "channel": {
+          "type": "rest-hook",
+          "endpoint": "Bot/$bot-clinical-ai-interpret-id",
+          "payload": "application/fhir+json"
+        }
+      }
+    }
+  ]
+}

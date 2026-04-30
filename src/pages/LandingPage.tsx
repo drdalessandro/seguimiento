@@ -1,24 +1,34 @@
-// SPDX-FileCopyrightText: Copyright Orangebot, Inc. and Medplum contributors
+// SPDX-FileCopyrightText: Copyright EPA Bienestar
 // SPDX-License-Identifier: Apache-2.0
-import { Anchor, Button, Stack, Text, Title } from '@mantine/core';
+import { Anchor, Button, List, Stack, Text, Title } from '@mantine/core';
 import { Document } from '@medplum/react';
 import type { JSX } from 'react';
 import { Link } from 'react-router';
 
 export function LandingPage(): JSX.Element {
   return (
-    <Document width={500}>
-      <Stack align="center">
-        <Title order={1} fz={36}>
-          Welcome!
+    <Document width={620}>
+      <Stack align="center" gap="md">
+        <Title order={1} fz={32}>
+          Seguimiento EPA Bienestar
         </Title>
-        <Text>
-          This "Hello World" example demonstrates how to build a simple React application that fetches Patient data from
-          Medplum. If you haven't already done so, <Anchor href="https://app.medplum.com/register">register</Anchor> for
-          Medplum Project. After that you can sign into your project by clicking the link below.
+        <Text ta="center" c="dimmed">
+          Plataforma clínica para colegas médicos: historia clínica longitudinal, pedidos de
+          laboratorio e imágenes, e interpretación asistida por IA, integrada con todos los
+          programas de{' '}
+          <Anchor href="https://www.epa-bienestar.com.ar" target="_blank">
+            epa-bienestar.com.ar
+          </Anchor>
+          .
         </Text>
-        <Button component={Link} to="/signin" size="lg" radius="xl">
-          Sign in
+        <List size="sm" c="dimmed" withPadding>
+          <List.Item>Historia unificada de los 6 programas (Mujer, Cardio, RHCV, SAC, AFACIMERA, Hábitos)</List.Item>
+          <List.Item>Pedidos de estudios complementarios con catálogo LOINC</List.Item>
+          <List.Item>Sugerencia de paneles diagnósticos por IA clínica</List.Item>
+          <List.Item>Interpretación automática de resultados</List.Item>
+        </List>
+        <Button component={Link} to="/signin" size="lg" radius="xl" mt="sm">
+          Ingresar
         </Button>
       </Stack>
     </Document>

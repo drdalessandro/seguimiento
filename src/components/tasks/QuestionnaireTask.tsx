@@ -58,7 +58,7 @@ function QuestionnaireModal(props: {
   return (
     <>
       <Button variant="outline" onClick={() => setOpen(true)}>
-        Fill out {props.questionnaire.title}
+        Completar {props.questionnaire.title}
       </Button>
       <Modal opened={open} onClose={() => setOpen(false)} size="xl">
         <QuestionnaireForm questionnaire={props.questionnaire} onSubmit={handleModalSubmit} />
@@ -113,13 +113,13 @@ export function ResponseDisplay(props: TaskCellProps): JSX.Element | null {
           <ItemRow key={item.id} item={item} />
         ))}
       </Collapse>
-      {showCollapsibleButton(collapsedItems) && <Anchor onClick={toggle}>{opened ? 'Show less' : 'Show more'}</Anchor>}
+      {showCollapsibleButton(collapsedItems) && <Anchor onClick={toggle}>{opened ? 'Ver menos' : 'Ver más'}</Anchor>}
       <Flex justify="right" mt={16}>
         {reviewed ? (
           <IconCircleCheck color="#79d290" size={48} />
         ) : (
           <Button mt={8} onClick={handleClick}>
-            Complete Review
+            Marcar como revisado
           </Button>
         )}
       </Flex>
