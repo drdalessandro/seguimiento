@@ -12,9 +12,9 @@
 set -euo pipefail
 
 DOMAIN="consultorio.epa-bienestar.com.ar"
-REPO_DIR="/opt/consultorio"
-NGINX_AVAILABLE="/etc/nginx/sites-available/${DOMAIN}.conf"
-NGINX_ENABLED="/etc/nginx/sites-enabled/${DOMAIN}.conf"
+REPO_DIR="/home/consultorio"
+NGINX_AVAILABLE="/etc/nginx/sites-available/${DOMAIN}"
+NGINX_ENABLED="/etc/nginx/sites-enabled/${DOMAIN}"
 
 if [[ "$(realpath "$(pwd)")" != "${REPO_DIR}" ]]; then
   echo "Este script asume que el repo está clonado en ${REPO_DIR}."
@@ -23,14 +23,14 @@ if [[ "$(realpath "$(pwd)")" != "${REPO_DIR}" ]]; then
 fi
 
 echo ">>> Instalando vhost de nginx"
-install -m 0644 "${REPO_DIR}/deploy/nginx/${DOMAIN}.conf" "${NGINX_AVAILABLE}"
+install -m 0644 "${REPO_DIR}/deploy/nginx/${DOMAIN}" "${NGINX_AVAILABLE}"
 ln -sf "${NGINX_AVAILABLE}" "${NGINX_ENABLED}"
 
 # Limpieza de un eventual vhost anterior que servía el subdominio viejo
-LEGACY="seguimiento.epa-bienestar.com.ar"
-if [[ -e "/etc/nginx/sites-enabled/${LEGACY}.conf" ]]; then
+LEGACY="consultorio.epa-bienestar.com.ar"
+if [[ -e "/etc/nginx/sites-enabled/${LEGACY}" ]]; then
   echo ">>> Removiendo vhost viejo ${LEGACY} (si existía)"
-  rm -f "/etc/nginx/sites-enabled/${LEGACY}.conf"
+  rm -f "/etc/nginx/sites-enabled/${LEGACY}"
 fi
 
 echo ">>> Validando configuración de nginx"
